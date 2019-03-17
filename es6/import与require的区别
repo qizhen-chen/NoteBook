@@ -1,0 +1,13 @@
+require 是赋值过程并且是运行时才执行， import 是解构过程并且是编译时执行。require可以理解为一个全局方法，
+所以它甚至可以进行下面这样的骚操作，是一个方法就意味着可以在任何地方执行。而import必须写在文件的顶部。
+
+var a = require(a() + '/ab.js')
+require的性能相对于import稍低，因为require是在运行时才引入模块并且还赋值给某个变量，而import只需要依据import中的接口在编译时引入指定模块所以性能稍高
+
+在commom.js 中module.export 之后 导出的值就不能再变化，但是在es6的export中是可以的。
+var a = 6
+export default {a}
+a = 7  //在es6中的export可以
+var a = 6
+module.export = a
+a = 7   //在common.js中，这样是错误的
