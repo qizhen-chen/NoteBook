@@ -1,0 +1,57 @@
+JSX:
+    const element = <h1>Hello, world!</h1>;
+    它被称为 JSX， 一种 JavaScript 的语法扩展。 我们推荐在 React 中使用 JSX 来描述用户界面。JSX 乍看起来可能比较像是模版语言，
+但事实上它完全是在 JavaScript 内部实现的。在 JSX 当中的表达式要包含在大括号里。
+    因为 JSX 的特性更接近 JavaScript 而不是 HTML , 所以 React DOM 使用 camelCase 小驼峰命名 来定义属性的名称，而不是使用 HTML 的属性名称
+    如果你是在使用本地编辑器编写 JSX 代码的话，推荐你去装一个支持 JSX 高亮的插件，这样更方便之后的开发学习。
+
+元素渲染：
+    更新界面的唯一办法是创建一个新的元素，然后将它传入 ReactDOM.render() 方法
+    在实际生产开发中，大多数React应用只会调用一次 ReactDOM.render() 。在下一个章节中我们将会详细介绍 有状态组件 实现 DOM 更新方式。
+    React 只会更新必要的部分。即便我们每秒都创建了一个描述整个UI树的新元素，React DOM 也只会更新渲染文本节点中发生变化的内容。
+
+组件 & Props：    
+    组件名称必须以大写字母开头。
+    组件的返回值只能有一个根元素。这也是我们要用一个<div>来包裹所有<Welcome />元素的原因。
+    在大型应用中，构建可复用的组件完全是值得的。当你的UI中有一部分重复使用了好几次（比如，Button、Panel、Avatar），
+    或者其自身就足够复杂（比如，App、FeedStory、Comment），类似这些都是抽象成一个可复用组件的绝佳选择，这也是一个比较好的做法。
+
+State & 生命周期：    
+    尽管 this.props 是由React本身安装的以及this.state 有特殊的含义，如果你需要存储的东西不在数据流中，你可以随意手动向类中添加其他字段（比如定时器ID）。
+    因为 this.props 和 this.state 可能是异步更新的，你不应该依靠它们的值来计算下一个状态。
+    例如，此代码可能无法更新计数器：
+    // Wrong
+    this.setState({
+      counter: this.state.counter + this.props.increment,
+    });
+    要修复它，请使用第二种形式的 setState() 来接受一个函数而不是一个对象。 该函数将接收先前的状态作为第一个参数，将此次更新被应用时的props做为第二个参数：
+    // Correct
+    this.setState((prevState, props) => ({
+      counter: prevState.counter + props.increment
+    }));
+    状态更新合并：
+        当你调用 setState() 时，React 将你提供的对象合并到当前状态。
+        例如，你的状态可能包含一些独立的变量：
+          constructor(props) {
+            super(props);
+            this.state = {
+              posts: [],
+              comments: []
+            };
+          }
+        你可以调用 setState() 独立地更新它们：
+          componentDidMount() {
+            fetchPosts().then(response => {
+              this.setState({
+                posts: response.posts
+              });
+            });
+
+            fetchComments().then(response => {
+              this.setState({
+                comments: response.comments
+              });
+            });
+          }
+        这里的合并是浅合并，也就是说this.setState({comments})完整保留了this.state.posts，但完全替换了this.state.comments。
+        
