@@ -54,4 +54,38 @@ State & 生命周期：
             });
           }
         这里的合并是浅合并，也就是说this.setState({comments})完整保留了this.state.posts，但完全替换了this.state.comments。
+
+条件渲染：
+    组件的 render 方法返回 null 并不会影响该组件生命周期方法的回调。例如，componentWillUpdate 和 componentDidUpdate 依然可以被调用。
+
+列表 & Keys：    
+    在jsx中嵌入map()
+    在上面的例子中，我们声明了一个单独的listItems变量并将其包含在JSX中
+    function NumberList(props) {
+      const numbers = props.numbers;
+      const listItems = numbers.map((number) =>
+        <ListItem key={number.toString()}
+                  value={number} />
+
+      );
+      return (
+        <ul>
+          {listItems}
+        </ul>
+      );
+    }
+    JSX允许在大括号中嵌入任何表达式，所以我们可以在map()中这样使用：
+    function NumberList(props) {
+      const numbers = props.numbers;
+      return (
+        <ul>
+          {numbers.map((number) =>
+            <ListItem key={number.toString()}
+                      value={number} />
+
+          )}
+        </ul>
+      );
+    }
+    这么做有时可以使你的代码更清晰，但有时这种风格也会被滥用。就像在JavaScript中一样，何时需要为了可读性提取出一个变量，这完全取决于你。但请记住，如果一个map()嵌套了太多层级，那可能就是你提取出组件的一个好时机。
         
